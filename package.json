@@ -1,7 +1,7 @@
 {
   "name": "assemble-demo",
   "version": "1.0.0",
-  "description": "",
+  "description": "assemble demo, then portfolio",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,7 +12,6 @@
     "assemble": "^0.4.42",
     "grunt": "^0.4.5",
     "grunt-contrib-connect": "^0.10.1",
-    "grunt-sass": "^1.0.0",
-    "normalize.scss": "^0.1.0"
+    "grunt-sass": "^1.0.0"
   }
 }
