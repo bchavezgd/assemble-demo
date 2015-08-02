@@ -4,41 +4,18 @@ module.exports = function (grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('./package.json'),
 
-		// resuable
-		paths: {
-			sass: 		'src/works/sass',
-			css: 			'_site/css',
-			src: 			'src/works',
-			src_img: 	'src/images',
-			dist: 		'_site',
-			dist_img: '_site/images',
-			content:	'src/content'
-		},
 
 		// setting up plugins.
 
 		// watch
 		watch: {
-			sass: {
-				files: ['<%= paths.sass %>/*.{sass,scss}', '<%= paths.sass %>/**/*'],
+			style: {
+				files: ['./src/works/sass/*.{sass,scss}', './src/works/sass/**/*'],
 				tasks: 'sass'
 			},
 			assemble: {
-				files: '<%= paths.src %>/**/*.hbs',
+				files: ['./src/works/**/*.hbs','./src/content/**/*.hbs'],
 				tasks: 'assemble'
-			}
-		},
-
-
-		// compile sass
-		sass: {
-			options: {
-				outputStyle: 'compact',
-			},
-			dist: {
-				files: {
-					'<%= paths.css %>styles.css': '<%= paths.sass %>/styles.sass'
-				}
 			}
 		},
 
@@ -48,29 +25,31 @@ module.exports = function (grunt) {
 			options: {
 				collections: [{
 					name: 'post',
-					sortby: 'posted',
+					sortby: 'date',
 					sortorder: 'descending'
         }],
 				layout: 		'page.hbs',
-				helpers: 		'<%= paths.src %>/helpers/**/*.js',
-				layoutdir: 	'<%= paths.src %>/layouts/',
-				partials: 	'<%= paths.src %>/partials/**/*.hbs',
-				data: 			'<%= paths.src %>/data/*.{json,yml}'
+				helpers: 		'./src/works/helpers/**/*.js',
+				layoutdir: 	'./src/works/layouts/',
+				partials: 	'./src/works/partials/**/*.hbs'
+				//data: 			'./src/works/data/*.{json,yml}'
 				//flatten: true
 			},
-			posts: {
-				files: [{
-						cwd: 	'<%= paths.content %>/',
-						dest: '<%= paths.dist %>/',
-						expand: true,
-						src: ['**/*.hbs', '!_pages/**/*.hbs']
-        },
-					{
-						cwd: 	'<%= paths.content %>/_pages/',
-						dest: '<%= paths.dist %>/',
-						expand: true,
-						src: '**/*.hbs'
-        }]
+			pages: {
+            src: ['./src/content/_pages/*.hbs', './src/content/blog/*.md'],
+            dest: './_site/'
+          }
+			},
+
+			// compile sass
+		sass: {
+			options: {
+				outputStyle: 'compact',
+			},
+			dist: {
+				files: {
+					'./_site/css/styles.css': './src/works/sass/styles.sass'
+				}
 			}
 		}
 
@@ -84,6 +63,6 @@ module.exports = function (grunt) {
 
 
 	/* grunt tasks */
-	grunt.registerTask('default', ['sass', 'assemble']);
+	grunt.registerTask('default', ['style', 'assemble']);
 
 };
