@@ -6,12 +6,13 @@ module.exports = function (grunt) {
 
 		// resuable
 		paths: {
-			sass: 		'/src/works/sass/',
-			css: 			'/_site/css/',
-			src: 			'src/works/',
-			src_img: 	'/src/images/',
-			dist: 		'/_site/',
-			dist_img: '/_site/images/'
+			sass: 		'src/works/sass',
+			css: 			'_site/css',
+			src: 			'src/works',
+			src_img: 	'src/images',
+			dist: 		'_site',
+			dist_img: '_site/images',
+			content:	'src/content'
 		},
 
 		// setting up plugins.
@@ -19,24 +20,15 @@ module.exports = function (grunt) {
 		// watch
 		watch: {
 			sass: {
-				files: ['<%= paths.sass %>*.sass', '<%= paths.sass %>**/*'],
+				files: ['<%= paths.sass %>/*.{sass,scss}', '<%= paths.sass %>/**/*'],
 				tasks: 'sass'
 			},
 			assemble: {
-				files: '<%= paths.src %>**/*.hbs',
+				files: '<%= paths.src %>/**/*.hbs',
 				tasks: 'assemble'
 			}
 		},
 
-		// node server
-		connect: {
-			dev: {
-				options: {
-					port: 8000,
-					base: './_site/'
-				}
-			}
-		},
 
 		// compile sass
 		sass: {
@@ -45,7 +37,7 @@ module.exports = function (grunt) {
 			},
 			dist: {
 				files: {
-					'<%= paths.css %>styles.css': '<%= paths.sass %>styles.sass'
+					'<%= paths.css %>styles.css': '<%= paths.sass %>/styles.sass'
 				}
 			}
 		},
@@ -60,20 +52,22 @@ module.exports = function (grunt) {
 					sortorder: 'descending'
         }],
 				layout: 		'page.hbs',
-				helpers: 		'.<%= paths.src %>helpers/**/*.js',
-				layoutdir: 	'.<%= paths.src %>layouts/',
-				partials: 	'.<%= paths.src %>partials/**/*.hbs'
+				helpers: 		'<%= paths.src %>/helpers/**/*.js',
+				layoutdir: 	'<%= paths.src %>/layouts/',
+				partials: 	'<%= paths.src %>/partials/**/*.hbs',
+				data: 			'<%= paths.src %>/data/*.{json,yml}'
+				//flatten: true
 			},
 			posts: {
 				files: [{
-						cwd: 	'<%= paths.contents %>',
-						dest: '<%= paths.dist %>',
+						cwd: 	'<%= paths.content %>/',
+						dest: '<%= paths.dist %>/',
 						expand: true,
 						src: ['**/*.hbs', '!_pages/**/*.hbs']
         },
 					{
-						cwd: 	'<%= paths.contents %>_pages/',
-						dest: '<%= paths.dist %>',
+						cwd: 	'<%= paths.content %>/_pages/',
+						dest: '<%= paths.dist %>/',
 						expand: true,
 						src: '**/*.hbs'
         }]
@@ -84,7 +78,6 @@ module.exports = function (grunt) {
 	});
 
 	/* load every plugin in package.json */
-	grunt.loadNpmTasks('grunt-contrib-connect');
 	grunt.loadNpmTasks('grunt-sass');
 	grunt.loadNpmTasks('assemble');
 	grunt.loadNpmTasks('grunt-contrib-watch');
