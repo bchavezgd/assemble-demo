@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # https://git-scm.com/docs/gitignore
 # https://help.github.com/articles/ignoring-files
 # Example .gitignore files: https://github.com/github/gitignore
@@ -7,6 +8,8 @@
 *.map
 .DS_Store
 
+=======
+>>>>>>> d4b61c6911472e51087b0c4647ad6d2b1fa0eb13
 # Logs
 logs
 *.log
@@ -33,4 +36,8 @@ build/Release
 
 # Dependency directory
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
+<<<<<<< HEAD
 node_modules
+=======
+node_modules
+>>>>>>> d4b61c6911472e51087b0c4647ad6d2b1fa0eb13
