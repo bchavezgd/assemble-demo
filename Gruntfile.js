@@ -21,25 +21,42 @@ module.exports = function (grunt) {
 
 		// compile to pages.
 
+		paths: { // <%= paths. %>
+			src: '/src/works',
+			dest: '/_site',
+			content: '/src/content'
+		},
+
+
+		/* assemble templating */
 		assemble: {
 			options: {
 				collections: [{
 					name: 'post',
-					sortby: 'date',
+					sortby: 'posted',
 					sortorder: 'descending'
         }],
-				layout: 		'page.hbs',
-				helpers: 		'./src/works/helpers/**/*.js',
-				layoutdir: 	'./src/works/layouts/',
-				partials: 	'./src/works/partials/**/*.hbs'
-				//data: 			'./src/works/data/*.{json,yml}'
-				//flatten: true
+				helpers: '.<%= paths.src %>/helpers/**/*.js',
+				layout: 'page.hbs',
+				layoutdir: '.<%= paths.src %>/layouts/',
+				partials: '.<%= paths.src %>/partials/**/*'
 			},
-			pages: {
-            src: ['./src/content/_pages/*.hbs', './src/content/blog/*.md'],
-            dest: './_site/'
-          }
-			},
+			posts: {
+				files: [
+					{
+					cwd: './src/content/blog',
+					dest: './_site/blog/',
+					expand: true,
+					src: ['**/*.hbs', '!_pages/**/*.hbs']
+        },
+					{
+						cwd: './src/content/_pages/',
+						dest: './_site/',
+						expand: true,
+						src: '**/*.hbs'
+        }]
+			}
+		},
 
 			// compile sass
 		sass: {

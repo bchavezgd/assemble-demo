@@ -1,14 +1,4 @@
 {{> site-header}}
-<nav>
-	<p>nav</p>
-<ul>
-	{{#each pages}}
-	<li>
-	{{ data.title }}
-	</li>
-	{{/each}}
-	</ul>
-</nav>
 <div class="content">
 	<h2>{{this.page.title}}</h2>
 	{{#markdown}}
@@ -22,7 +12,7 @@
 	<div>
 		<ul>
 			{{#withSort post 'data.date'}}
-				{{#each this.post }}
+				{{#each this.pages }}
 					<li>{{this.data.title}}</li>
 				{{/each}}
 			{{/withSort}}
