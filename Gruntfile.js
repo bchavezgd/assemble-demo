@@ -4,82 +4,34 @@ module.exports = function (grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('./package.json'),
 
-
-		// setting up plugins.
-
-		// watch
-		watch: {
-			style: {
-				files: ['./src/works/sass/*.{sass,scss}', './src/works/sass/**/*'],
-				tasks: 'sass'
-			},
-			assemble: {
-				files: ['./src/works/**/*.hbs','./src/content/**/*.hbs'],
-				tasks: 'assemble'
-			}
-		},
-
-		// compile to pages.
-
-		paths: { // <%= paths. %>
-			src: '/src/works',
-			dest: '/_site',
-			content: '/src/content'
-		},
-
-
-		/* assemble templating */
+		// assemble
 		assemble: {
 			options: {
-				collections: [{
-					name: 'post',
-					sortby: 'posted',
-					sortorder: 'descending'
-        }],
-				helpers: '.<%= paths.src %>/helpers/**/*.js',
 				layout: 'page.hbs',
-				layoutdir: '.<%= paths.src %>/layouts/',
-				partials: '.<%= paths.src %>/partials/**/*'
+				layoutdir: './src/works/layouts/',
+				partials: './src/works/partials/**/*.hbs'
 			},
 			posts: {
 				files: [
 					{
-					cwd: './src/content/blog',
-					dest: './_site/blog/',
-					expand: true,
-					src: ['**/*.hbs', '!_pages/**/*.hbs']
-        },
-					{
-						cwd: './src/content/_pages/',
-						dest: './_site/',
+						cwd: './src/content/', // nav to dir
+						dest: './_site/', // process to this dir w/ folder structure intact
 						expand: true,
-						src: '**/*.hbs'
-        }]
-			}
-		},
-
-			// compile sass
-		sass: {
-			options: {
-				outputStyle: 'compact',
-			},
-			dist: {
-				files: {
-					'./_site/css/styles.css': './src/works/sass/styles.sass'
-				}
+						src: ['**/*.hbs','**/*.md', '!_pages/**/*.hbs'] // files to process
+},
+					{
+						cwd: './src/content/_pages/', // nav to dir
+						dest: './_site/', // proccess to this dir w/folders intact
+						expand: true,
+						src: '**/*.hbs' // folders/files to process
+}]
 			}
 		}
-
-		// end grunt tasks
+		// end assemble
 	});
-
-	/* load every plugin in package.json */
-	grunt.loadNpmTasks('grunt-sass');
+	
 	grunt.loadNpmTasks('assemble');
-	grunt.loadNpmTasks('grunt-contrib-watch');
-
-
-	/* grunt tasks */
-	grunt.registerTask('default', ['style', 'assemble']);
-
+	
+	grunt.registerTask('default', ['assemble']);
+	
 };
