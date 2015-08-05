@@ -18,26 +18,18 @@ module.exports = function (grunt) {
 			options: {
 				// Needs {{> body }} in layouts when using layoutdir
 				layoutdir: SRC + '/layouts/',
+				
 				// partials need extention explictly defined.
 				partials: SRC + '/partials/**/*.hbs',
-				// data file
+				
+				// data files
 				data: SRC + '/data/*.{json, yml}'
 			},
-			posts: {
-				files: [
-					{
-						cwd: './src/content/', // nav to dir
-						dest: DEST, // process to this dir w/ folder structure intact
-						expand: true,
-						src: ['**/*.hbs', '**/*.md', '!_pages/**/*.hbs'] // files to process
-},
-					{
-						cwd: './src/content/_pages/', // nav to dir
-						dest: DEST, // proccess to this dir w/folders intact
-						expand: true,
-						src: '**/*.hbs' // folders/files to process
-}]
-			}
+			collection: [{
+				name: 'pages',
+				inflection: 'page',
+				
+			}]
 		}
 		// end assemble
 	});
