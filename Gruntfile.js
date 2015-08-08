@@ -1,37 +1,29 @@
 module.exports = function (grunt) {
 	'use strict';
 
-	// vars for directories.
-	var SRC = '/src/works',
-		DEST = '_site/',
-		SASSDIR = '/src/works/sass',
-		CSSdir = DEST + '/css',
-		CONTENT = SRC + '/content';
-
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('./package.json'),
 
 
-
-		// assemble
+		// Assembles your email content with html layout
 		assemble: {
 			options: {
-				// Needs {{> body }} in layouts when using layoutdir
-				layoutdir: SRC + '/layouts/',
-				
-				// partials need extention explictly defined.
-				partials: SRC + '/partials/**/*.hbs',
-				
-				// data files
-				data: SRC + '/data/*.{json, yml}'
+				layout: 'page.hbs',
+				layoutdir: './src/works/layouts',
+				partials: './src/works/partials/**/*.hbs',
+				data: './src/works/data/*.{json,yml}',
+				helpers: './src/works/helpers',
+				flatten: false
 			},
-			collection: [{
-				name: 'pages',
-				inflection: 'page',
-				
-			}]
-		}
-		// end assemble
+			pages: {
+				src: ['./src/content/_pages/**/*.hbs'],
+				dest: './_site',
+				layout: 'page.hbs'
+			}
+		},
+
+
+
 	});
 
 	grunt.loadNpmTasks('assemble');
