@@ -1,7 +1,8 @@
 ---
 title: "first!"
-posted: 2014-07-30
-post: true
+date: 2014-07-30
+blog: true
+layout: post.hbs
 ---
 
 Prototype: Lets get coding.

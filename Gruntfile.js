@@ -25,11 +25,25 @@ module.exports = function (grunt) {
 				cwd: 'src/content/_pages/',
 				src: ['**/*.{hbs, md}'],
 				dest: './_site'
-			}
+			},
+			blog: {
+				expand: true,
+				flatten: true,
+				cwd: './src/content/blog/',
+				src: '**/*.md',
+				dest: './_site/blog/'
+			},
+			collections: [{
+				name: 'blog',
+				inflection: 'post',
+				sortorder: 'desc',
+				sortby: 'date'
+			}],
+
 		},
 		// end assemble
 
-		clean:  ['./_site/'],
+		clean: ['./_site/'],
 
 		sass: {
 			options: {
@@ -38,7 +52,7 @@ module.exports = function (grunt) {
 			},
 			dist: {
 				files: {
-					'./_site/css/styles.css' : './src/works/sass/styles.sass',
+					'./_site/css/styles.css': './src/works/sass/styles.sass',
 				}
 			}
 		}
@@ -51,6 +65,6 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-sass')
 
-	grunt.registerTask('default', ['clean', 'assemble']);
+	grunt.registerTask('default', ['clean', 'sass', 'assemble']);
 
 };
