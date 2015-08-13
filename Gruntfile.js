@@ -4,8 +4,6 @@ module.exports = function (grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('./package.json'),
 
-
-		// Assembles your email content with html layout
 		assemble: {
 			options: {
 				// calls a default layout, needs layoutdir: or full path.
@@ -16,28 +14,43 @@ module.exports = function (grunt) {
 				partials: './src/works/partials/**/*.hbs',
 				// data dir. no default
 				data: './src/works/data/*.{json,yml}',
-				// helpers: './src/works/helpers',
-				// flatten creates a weird file structure in the dest dir
-				flatten: false
+				// needs to target files. not just a dir
+				helpers: ['./src/works/helpers/*.js'],
 			},
 			// pages is a built in assemble collection.
 			pages: {
-				files: [{
-					expand: true,
-					flatten: false,
-					cwd: 'src/content/_pages/',
-					src: ['**/*.hbs'],
-					dest: '_site'
-				}]
+				// adds additional set of Grunt.js commands
+				expand: true,
+				flatten: false,
+				cwd: 'src/content/_pages/',
+				src: ['**/*.{hbs, md}'],
+				dest: './_site'
 			}
 		},
+		// end assemble
+
+		clean:  ['./_site/'],
+
+		sass: {
+			options: {
+				outputStyle: 'expanded',
+				sourcemap: true
+			},
+			dist: {
+				files: {
+					'./_site/css/styles.css' : './src/works/sass/styles.sass',
+				}
+			}
+		}
 
 
 
 	});
 
 	grunt.loadNpmTasks('assemble');
+	grunt.loadNpmTasks('grunt-contrib-clean');
+	grunt.loadNpmTasks('grunt-sass')
 
-	grunt.registerTask('default', ['assemble']);
+	grunt.registerTask('default', ['clean', 'assemble']);
 
 };
