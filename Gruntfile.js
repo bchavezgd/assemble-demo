@@ -26,7 +26,7 @@ module.exports = function (grunt) {
 				src: ['**/*.{hbs, md}'],
 				dest: './_site'
 			},
-			blog: {
+			posts: {
 				expand: true,
 				flatten: true,
 				cwd: './src/content/blog/',
@@ -34,7 +34,7 @@ module.exports = function (grunt) {
 				dest: './_site/blog/'
 			},
 			collections: [{
-				name: 'blog',
+				name: 'blogs',
 				inflection: 'post',
 				sortorder: 'desc',
 				sortby: 'date'
@@ -48,7 +48,8 @@ module.exports = function (grunt) {
 		sass: {
 			options: {
 				outputStyle: 'expanded',
-				sourcemap: true
+				outFile: './_site/css/styles.css',
+				sourceMap: true
 			},
 			dist: {
 				files: {
