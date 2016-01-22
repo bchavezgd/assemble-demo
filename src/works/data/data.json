@@ -1,5 +1,13 @@
 {
 	"name": "Brian Chavez",
 	"email": "brian@elephantaviator.com",
-	"url": "http://www.elephantaviator.com"
+	"website": "http://www.elephantaviator.com",
+	"socialMedia": [
+		{
+			"twitter": {
+			"url": "",
+			"username":""
+			},
+		}
+	]
 }

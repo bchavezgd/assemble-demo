@@ -1,60 +1,93 @@
 module.exports = function (grunt) {
-	'use strict';
 
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('./package.json'),
 
+		// reusable paths. 
+		paths: {
+			src: './src',
+			works: './src/works',
+			dist: './_site',
+			content: './src/content'
+		},
+
 		assemble: {
 			options: {
-				// calls a default layout, needs layoutdir: or full path.
+				// calls a default layout, needs `layoutdir:` or full path.
 				layout: 'page.hbs',
-				// needed when using layout.
-				layoutdir: './src/works/layouts',
+
+				// needed when using `layout:`.
+				layoutdir: '<%= paths.works %>/layouts/',
+
 				// where to look for partials - no default.
-				partials: './src/works/partials/**/*.hbs',
+				partials: '<%= paths.works %>/partials/**/*.hbs',
+
 				// data dir. no default
-				data: './src/works/data/*.{json,yml}',
+				data: '<%= paths.works %>/data/*.{json,yml}',
+
 				// needs to target files. not just a dir
-				helpers: ['./src/works/helpers/*.js'],
+				helpers: [
+					'<%= paths.works %>/helpers/*.js'
+				],
 			},
 			// pages is a built in assemble collection.
 			pages: {
 				// adds additional set of Grunt.js commands
 				expand: true,
 				flatten: false,
-				cwd: 'src/content/_pages/',
+				cwd: '<%= paths.content %>/content/_pages/',
 				src: ['**/*.{hbs, md}'],
-				dest: './_site'
+				dest: '<%= paths.dist %>/'
 			},
+			// posts acting as a page collection. 
 			posts: {
 				expand: true,
 				flatten: true,
-				cwd: './src/content/blog/',
+				cwd: '<%= paths.content %>/blog/',
 				src: '**/*.md',
-				dest: './_site/blog/'
+				dest: '<%= paths.dist %>/blog/'
 			},
-			collections: [{
-				name: 'blogs',
-				inflection: 'post',
-				sortorder: 'desc',
-				sortby: 'date'
-			}],
+			// collections should be for adding navs and whatnot. 
 
 		},
 		// end assemble
 
-		clean: ['./_site/'],
+		clean: ['<%= paths.dist %>'],
 
 		sass: {
 			options: {
 				outputStyle: 'expanded',
-				outFile: './_site/css/styles.css',
-				sourceMap: true
+				sourceMap: false
 			},
-			dist: {
-				files: {
-					'./_site/css/styles.css': './src/works/sass/styles.sass',
-				}
+			files: {
+				src: '<%= paths.works %>/sass/styles.sass',
+				dest: '<%= paths.dist %>style.css'
+			}
+		},
+
+		postcss: {},
+
+		connect: {
+			server: {
+				hostname: 'localhost',
+				port: '3000',
+				livereload: true,
+				base: '<%= paths.dist %>'
+			}
+		},
+		watch: {
+			files: [
+				'<%= paths.src %>/**/*'
+			],
+			tasks: [
+				'sass',
+			//	'postcss',
+				'assemble'
+			],
+			options: {
+				spawn: false,
+				event: 'all',
+				livereload: true
 			}
 		}
 
@@ -62,10 +95,8 @@ module.exports = function (grunt) {
 
 	});
 
-	grunt.loadNpmTasks('assemble');
-	grunt.loadNpmTasks('grunt-contrib-clean');
-	grunt.loadNpmTasks('grunt-sass')
+	require('load-grunt-tasks')(grunt);
 
-	grunt.registerTask('default', ['clean', 'sass', 'assemble']);
+	grunt.registerTask('default', ['clean', 'sass', 'assemble', 'connect', 'watch']);
 
 };
